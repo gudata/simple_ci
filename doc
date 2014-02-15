@@ -1,0 +1,8 @@
+repo = Rugged::Repository.new('/home/guda/yatoto')
+ref = repo.head
+
+hex_sha_interesting=ref.target
+
+object = repo.read(ref.target)
+
+tree = repo.lookup(ref.target).tree
