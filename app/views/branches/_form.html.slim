@@ -1,0 +1,13 @@
+= simple_form_for([repository, @branch]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    p = @branch.name
+    p = @branch.canonical_name
+    p = @branch.tip_oid
+    = f.input :image_uid
+    = f.input :build
+
+
+  .form-actions
+    = f.button :submit

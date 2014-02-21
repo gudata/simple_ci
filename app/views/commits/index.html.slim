@@ -1,0 +1,38 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  - if @branch
+    li = link_to(repository.name, [repository, :branches])
+    li.current = "#{@branch.name} Commits"
+  - else
+    li.current = link_to(repository.name, [repository, :branches])
+
+h1 Commits
+
+= simple_form_for :search, method: :get  do |f|
+  = f.input :q, label: 'sha/message'
+table
+  tr
+    th Image uid
+    th Oid
+    th Branch
+    th Time
+    th
+    th
+    th
+  - @commits.each do |commit|
+    tr
+      td = image_tag(Gravatar.new(commit.committer.email, duration: 1.hour).image_url(size: 32))
+      td = commit.oid
+      td = link_to commit.branch.name, repository_commits_path(branch_id: commit.branch_id)
+      td = l commit.time, format: :short
+      td = link_to 'Show', [repository, commit]
+      td = link_to 'Edit', [:edit, repository, commit]
+      td = link_to 'Destroy', [:edit, repository, commit], data: {:confirm => 'Are you sure?'}, :method => :delete
+    tr
+      td colspan=7 = commit.message
+
+.right
+  = paginate @commits
+
+br
+  = link_to "All Commits", [repository, :commits]

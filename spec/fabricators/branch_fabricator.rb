@@ -1,0 +1,2 @@
+Fabricator(:branch) do
+end

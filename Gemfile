@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 gem 'foundation-rails'
+gem 'foundation-icons-sass-rails'
 gem 'thin'
 gem 'state_machine'
 gem 'kaminari'
@@ -11,6 +12,7 @@ gem "slim-rails"
 gem 'rugged', git: 'git://github.com/libgit2/rugged.git', branch: 'development', submodules: true
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
+gem 'cliver'
 gem 'simple_form', '>= 3.0.0'
 gem 'awesome_print', git: 'https://github.com/michaeldv/awesome_print.git'
 gem 'dragonfly', '~>1.0.0'
@@ -33,7 +35,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+# gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
@@ -59,6 +61,12 @@ group :development do
   gem 'gem-open'
 end
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0.0.beta'
+  gem 'faker'
+  gem 'fabrication'
+  gem 'database_cleaner', git: 'https://github.com/bmabey/database_cleaner.git'
+end
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

@@ -1,0 +1,18 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @script.name
+p
+  strong Body:
+  = @script.body
+p
+  strong Timeout:
+  = @script.timeout
+p
+  strong Branch:
+  = @script.branch_id
+
+= link_to 'Edit', [:edit, @repository, @branch, @script]
+'|
+= link_to 'Back', [@repository, @branch, :scripts]

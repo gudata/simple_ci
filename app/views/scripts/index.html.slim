@@ -1,0 +1,30 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li = link_to(@repository.name, [@repository, :branches])
+  li.current = link_to("Master Scripts", [@repository, @branch, :scripts])
+
+h1 = "Scripts for #{@branch.name}"
+
+table
+  tr
+    th Name
+    th Body
+    th Timeout
+    th Branch
+    th
+    th
+    th
+
+  - @scripts.each do |script|
+    tr
+      td = script.name
+      td = script.body
+      td = script.timeout
+      td = script.branch_id
+      td = link_to 'Show', [@repository, @branch, script]
+      td = link_to 'Edit', [:edit, @repository, @branch, script]
+      td = link_to 'Destroy', [@repository, @branch, script], data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Script', [:new, @repository, @branch, :script]

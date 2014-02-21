@@ -1,9 +1,22 @@
 SimpleCi::Application.routes.draw do
+
+  resources :repositories do
+    member do
+      get :import_commits
+      get :refresh_commits
+    end
+    resources :branches, only: [:index, :edit, :update, :destroy] do
+      resources :scripts
+    end
+
+    resources :commits
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'repositories#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

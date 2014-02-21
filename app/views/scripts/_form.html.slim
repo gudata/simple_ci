@@ -1,0 +1,11 @@
+= simple_form_for([@repository, @branch, @script]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :body
+    = f.input :timeout
+    = f.association :branch
+
+  .form-actions
+    = f.button :submit

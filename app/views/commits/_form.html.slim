@@ -1,0 +1,10 @@
+= simple_form_for(@commit) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :oid
+    = f.input :image_uid
+    = f.input :branch_id
+
+  .form-actions
+    = f.button :submit

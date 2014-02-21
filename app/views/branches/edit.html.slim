@@ -1,0 +1,8 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li = link_to(repository.name, [repository, :branches])
+  li.current = link_to(@branch.name, [:edit, repository, @branch])
+
+h1 Editing branch
+
+== render 'form'

@@ -1,0 +1,28 @@
+repo = Rugged::Repository.new('/home/guda/yatoto')
+ref = repo.head
+
+hex_sha_interesting=ref.target
+
+object = repo.read(ref.target)
+
+tree = repo.lookup(ref.target).tree
+
+
+__END__
+
+rm db/development.sqlite3 ; rake db:create; rake db:migrate; rake db:seed
+
+r = Repository.first
+r.open
+r.refresh_commits Branch.first
+
+
+
+
+hex_sha_interesting = Branch.first.tip_oid
+
+walker = walker = Rugged::Walker.new(Repository.first.open)
+walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_DATE)
+walker.push(hex_sha_interesting)
+walker.each { |c| puts c.inspect }
+walker.reset

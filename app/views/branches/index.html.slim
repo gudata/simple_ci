@@ -1,0 +1,50 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li.current = link_to(repository.name, [:repositories])
+
+h1 Branches
+
+table
+  tr
+    th
+      i.fi-loop
+    th Image
+    th Name
+    th ?
+    th Tip
+    th Last
+    th
+    th
+    th
+
+  - @branches.each do |branch|
+    tr
+      td
+        - if branch.build?
+          i.fi-play
+        - else
+          i.fi-pause
+      td = branch.image ? image_tag(branch.image.thumb("32x32>")) : ''
+      td
+        span title=branch.canonical_name = branch.name
+      td
+        - if branch.tip_commit.persisted?
+          span title=branch.tip_commit.committer.email
+            = image_tag(Gravatar.new(branch.tip_commit.committer.email, duration: 1.hour).image_url(size: 32))
+        - else
+          == '&nbsp;'
+      td
+        span title=branch.tip_oid
+          = truncate(branch.tip_commit.message, length: 30)
+      td = branch.tip_commit.time ? l(branch.tip_commit.time, format: :short) : '---'
+      td = link_to 'Commits', repository_commits_path(branch_id: branch.id)
+      td = link_to 'Scripts', [repository, branch, :scripts]
+
+      td = link_to 'Edit', [:edit, repository, branch]
+      td = link_to 'Destroy', [repository, branch], data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+ul.button-group
+  li = link_to 'Inital import', [:import_commits, repository], class: 'button tiny secondary'
+  li = link_to 'Refresh', [:refresh_commits, repository], class: 'button tiny'

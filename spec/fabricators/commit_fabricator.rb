@@ -1,0 +1,2 @@
+Fabricator(:commit) do
+end
