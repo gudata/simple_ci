@@ -1,16 +1,29 @@
-yatoto = Fabricate(:repository, name: 'yatoto')
+yatoto = Fabricate(:repository, name: 'Photo blog', auto_fetch: true, fetch_interval: 1)
 
-execute = Execute.new(yatoto.path)
+execute = Git.new(yatoto.path)
 execute.switch_branch 'second_branch'
 execute.change_file 'hello_branch'
 execute.commit_file 'hello_branch', 'first in second_branch'
 
 yatoto.open
 yatoto.refresh_branches
+# yatoto.refresh_all_commits
 
 Branch.find_each do |branch|
   script = branch.scripts.build
-  script.body = 'echo "hello world"'
+  script.name = "Tests"
+  script.body = <<-BASH
+echo "hello world"
+i=1
+while [ $i -lt 400 ]; do
+    printf "%i : %b\\n"
+    let "i++"
+done
+echo "end"
+  BASH
+
   script.save
 end
-repository = Repository.create([{ name: 'Club50plus' }])
+Branch.first.update_attribute(:build, true)
+
+repository = Repository.create([{ name: 'Emptyness' }])

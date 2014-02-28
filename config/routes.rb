@@ -1,6 +1,7 @@
 SimpleCi::Application.routes.draw do
 
-  resources :repositories do
+
+  resources :repositories, except:[:show] do
     member do
       get :import_commits
       get :refresh_commits
@@ -9,7 +10,17 @@ SimpleCi::Application.routes.draw do
       resources :scripts
     end
 
-    resources :commits
+    resources :builds do
+      member do
+        patch :stop
+        patch :start_new
+      end
+    end
+    resources :commits do
+      member do
+        patch :create_build
+      end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

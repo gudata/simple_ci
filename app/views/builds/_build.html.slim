@@ -1,0 +1,20 @@
+- if build.commit
+  tr class=(build.branch.build ? 'active_branch' : 'inactive_branch')
+    td = build.id
+    td title=build.state_name
+      = build_state(build)
+
+    td = image_tag(Gravatar.new(build.commit.committer.email, duration: 1.hour).image_url(size: 32)) rescue ''
+    td = truncate(build.commit.message, length: 50)
+    td
+      = build.branch.image ? image_tag(build.branch.image.thumb("32x32>").url) : ''
+      '
+      = build.branch.name
+    td
+      - if build.total_time.present?
+        = build.total_time
+      - elsif build.started_at.present?
+        = distance_of_time_in_words(build.started_at, Time.now)
+      '
+      = build.state_name
+    td = build_actions(build)

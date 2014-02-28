@@ -8,9 +8,8 @@ h1 = "Scripts for #{@branch.name}"
 table
   tr
     th Name
-    th Body
-    th Timeout
-    th Branch
+    th State
+    th Script
     th
     th
     th
@@ -18,9 +17,7 @@ table
   - @scripts.each do |script|
     tr
       td = script.name
-      td = script.body
-      td = script.timeout
-      td = script.branch_id
+      td = truncate(script.body, length: 60)
       td = link_to 'Show', [@repository, @branch, script]
       td = link_to 'Edit', [:edit, @repository, @branch, script]
       td = link_to 'Destroy', [@repository, @branch, script], data: {:confirm => 'Are you sure?'}, :method => :delete

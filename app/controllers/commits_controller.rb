@@ -1,7 +1,8 @@
 class CommitsController < ApplicationController
   inherit_resources
   belongs_to :repository
-  actions :all, :only => [:update, :index, :edit, :destroy]
+  actions :all, :only => [:update, :index, :destroy, :show]
+
 
   def index
     @search = OpenStruct.new(params[:search])
@@ -20,6 +21,15 @@ class CommitsController < ApplicationController
     @commits = commits.includes(:author, :committer, :branch).order("time DESC").page(params[:page]).per(params[:per])
   end
 
+  def show
+    @commit = Commit.find(params[:id])
+  end
+
+  def create_build
+    build = Commit.find(params[:id]).create_pending_build
+    flash[:success] = "Build created #{build.id}"
+    redirect_to :back
+  end
 
   protected
 

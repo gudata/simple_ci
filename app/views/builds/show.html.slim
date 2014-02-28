@@ -1,0 +1,19 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li = link_to(repository.name, [:repositories])
+  li = link_to('Builds', [repository, :builds])
+  li.current = 'Show'
+
+p
+  ' State
+  span.label = resource.state_name
+  ul.button-group
+    li = link_to 'New Build', [:create_build, repository, resource.commit], method: :patch, class: 'button tiny secondary'
+    li = link_to "Scripts for #{resource.branch.name}", [repository, resource.branch, :scripts], class: 'button tiny secondary'
+    li = build_actions resource, show_show_action: false
+pre.show_build
+  = highlight(resource.output)
+
+- if resource.failed?
+  p
+  h4 = ['Relax - You are not a genious', 'Don\'t worry - probably next time...', 'Shhh... fix it before anyone noticed it'].sample

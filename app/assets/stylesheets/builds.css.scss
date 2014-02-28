@@ -1,0 +1,17 @@
+tr.inactive_branch td {
+  color: silver;
+}
+
+pre.show_build {
+  font-family: "DejaVu Sans Mono", "Courier new";
+  font-size: 10px;
+  span.build_success {
+    color: green;
+  }
+
+  span.build_error, .build_failed {
+    color: red;
+  }
+
+
+}

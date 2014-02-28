@@ -28,15 +28,13 @@ ActiveRecord::Schema.define(version: 20140215190846) do
 
   create_table "builds", force: true do |t|
     t.integer  "commit_id"
+    t.integer  "repository_id"
     t.string   "oid"
     t.integer  "state"
     t.datetime "started_at"
     t.datetime "finished_at"
-    t.text     "push_data",   limit: 16777215
-    t.text     "trace",       limit: 2147483647
-    t.string   "before_oid"
-    t.string   "tmp_file"
-    t.integer  "pid"
+    t.string   "total_time"
+    t.text     "output",        limit: 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -65,7 +63,12 @@ ActiveRecord::Schema.define(version: 20140215190846) do
     t.string   "name"
     t.string   "path"
     t.string   "image_uid"
-    t.string   "email_recipients", default: "", null: false
+    t.string   "git",              default: "git"
+    t.integer  "display_order",    default: 100
+    t.integer  "fetch_interval",   default: 60
+    t.boolean  "auto_fetch"
+    t.datetime "last_fetch"
+    t.string   "email_recipients", default: "",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,6 +77,7 @@ ActiveRecord::Schema.define(version: 20140215190846) do
     t.integer  "branch_id"
     t.string   "name"
     t.text     "body"
+    t.integer  "state"
     t.integer  "timeout",    default: 1800, null: false
     t.datetime "created_at"
     t.datetime "updated_at"

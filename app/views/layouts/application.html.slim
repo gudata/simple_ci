@@ -3,15 +3,16 @@ html lang="en"
   head
     meta charset="utf-8"
     meta content="width=(device-width,)initial-scale=1.0" name="viewport"
-    title= content_for?(:title) ? yield(:title) : "foundation-rails"
+    title= content_for?(:title) ? yield(:title) : "Simple CI"
     = stylesheet_link_tag    "application"
     = javascript_include_tag "vendor/modernizr"
     = csrf_meta_tags
   body
-    .row
-      .small-11.small-centered.columns
-        ul.breadcrumbs
-          = yield :breadcrumbs
-
-        = yield
+    section role="main"
+      .row
+        .small-12.small-centered.columns
+          ul.breadcrumbs
+            = yield :breadcrumbs
+          = display_flash_messages
+          = yield
     = javascript_include_tag "application"

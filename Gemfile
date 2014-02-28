@@ -16,8 +16,11 @@ gem 'cliver'
 gem 'simple_form', '>= 3.0.0'
 gem 'awesome_print', git: 'https://github.com/michaeldv/awesome_print.git'
 gem 'dragonfly', '~>1.0.0'
+# gem 'charlock_holmes'
 gem 'gravatar-ultimate'
 gem 'inherited_resources', git: 'https://github.com/josevalim/inherited_resources.git'
+
+gem 'childprocess'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'

@@ -14,4 +14,6 @@
  *= require_tree .
  */
 @import "foundation_and_overrides";
-@import 'foundation-icons';
+@import 'foundation-icons'; // http://zurb.com/playground/foundation-icon-fonts-3
+
+@import "simple_ci";

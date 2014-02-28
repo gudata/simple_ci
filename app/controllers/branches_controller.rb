@@ -22,7 +22,7 @@ class BranchesController < ApplicationController
   protected
 
   def permitted_params
-    params.permit(branch: [:build, :image_uid])
+    params.permit(branch: [:build, :image, :retained_image])
   end
 
 end

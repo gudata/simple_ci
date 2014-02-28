@@ -7,8 +7,16 @@ class ScriptsController < ApplicationController
 
   actions :all
 
+  before_filter :fix_line_endings, only: [:update, :create]
+
   def index
     @scripts = @branch.scripts
+  end
+
+  def new
+    new! do
+      resource.branch_id = @branch.id unless resource.branch_id
+    end
   end
 
   def update
@@ -23,4 +31,9 @@ class ScriptsController < ApplicationController
     params.permit(script: [:name, :body])
   end
 
+  def fix_line_endings
+    return if params[:script][:body].blank?
+    body = params[:script][:body]
+    params[:script][:body] = body.encode(body.encoding, :universal_newline => true).encode(body.encoding, :newline => :universal)
+  end
 end

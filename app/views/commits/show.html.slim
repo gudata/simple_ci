@@ -1,15 +1,42 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li = link_to(repository.name, [:repositories])
+  li = link_to('commits', [repository, :commits])
+  li.current = 'Show'
+
 p#notice = notice
+p
+  strong Branch:
+  = @commit.branch.name
+p
+  strong Commiter:
+  = @commit.committer.name
+  '
+  = @commit.committer.email
+
+- if @commit.author
+  p
+    strong Author:
+    = @commit.author.name
+    '
+    = @commit.author.email
 
 p
   strong Oid:
   = @commit.oid
-p
-  strong Image uid:
-  = @commit.image_uid
-p
-  strong Branch:
-  = @commit.branch_id
 
-= link_to 'Edit', edit_commit_path(@commit)
-'|
-= link_to 'Back', commits_path
+
+p
+  strong Message:
+  = @commit.message
+
+p
+  strong Time:
+  = @commit.time
+
+
+p
+  strong Created at:
+  = @commit.created_at
+
+= link_to 'Back',  [repository, :commits]

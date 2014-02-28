@@ -1,9 +1,21 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li = link_to('List Projects', root_url)
+  li.current = link_to('Edit', [:edit, @repository])
+
 = simple_form_for(@repository) do |f|
   = f.error_notification
 
   .form-inputs
     = f.input :name
+    = f.input :display_order
     = f.input :path
-
+    = f.input :image, as: :file
+    = f.hidden_field :retained_image
+    fieldset
+      legend Pooling
+      = f.input :auto_fetch
+      = f.input :fetch_interval, hint: 'in seconds', placeholder: 'in seconds'
+      = f.input :last_fetch
   .form-actions
     = f.button :submit

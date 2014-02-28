@@ -1,11 +1,13 @@
 = simple_form_for([@repository, @branch, @script]) do |f|
   = f.error_notification
-
   .form-inputs
-    = f.input :name
-    = f.input :body
-    = f.input :timeout
-    = f.association :branch
+    .row
+      .small-12.medium-11.large-10.column.panel
+        = f.input :body, label: 'Bash script', input_html: {rows: 4}
+      .small-12.medium-1.large-2.column
+        = f.input :name
+        = f.association :branch
+        = f.input :timeout
 
   .form-actions
     = f.button :submit

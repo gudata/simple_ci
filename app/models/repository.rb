@@ -1,5 +1,11 @@
 class Repository < ActiveRecord::Base
   has_many :branches, dependent: :destroy
+  has_many :builds
+
+  validates :name, presence: true
+  validates :path, presence: true
+
+  dragonfly_accessor :image
 
   def open
     @rugged_repository = Rugged::Repository.new(path)
@@ -38,7 +44,7 @@ class Repository < ActiveRecord::Base
 
   def goto_branch branch_name
     git = Git.new(self.path)
-    git.execute("checkout -f #{branch_name}")
+    git.execute("checkout -f  --track  #{branch_name}")
     git.execute("pull")
   end
 
@@ -93,8 +99,10 @@ class Repository < ActiveRecord::Base
     fetch_from_remotes
     open
     refresh_branches
-    branches.find_each do |branch|
-      import_commits_from_branch(branch)
+    Commit.without_creating_builds do
+      branches.find_each do |branch|
+        import_commits_from_branch(branch)
+      end
     end
   end
 

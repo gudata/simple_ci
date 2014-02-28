@@ -5,6 +5,10 @@ class CreateRepositories < ActiveRecord::Migration
       t.string :path
       t.string :image_uid
       t.string :git, default: 'git'
+      t.integer :display_order, default: 100
+      t.integer :fetch_interval, default: 60
+      t.boolean :auto_fetch
+      t.datetime :last_fetch
 
       t.string   "email_recipients",         default: "",    null: false
       t.timestamps
@@ -26,6 +30,8 @@ class CreateRepositories < ActiveRecord::Migration
       t.belongs_to :branch
       t.string :name
       t.text :body
+      t.integer  :state, index: true
+
       t.integer  "timeout",                  default: 1800,  null: false
       t.timestamps
     end
@@ -50,22 +56,20 @@ class CreateRepositories < ActiveRecord::Migration
       t.timestamps
     end
 
-
     create_table "builds", force: true do |t|
       t.belongs_to :commit
+      t.belongs_to :repository
       t.string   :oid, index: true
-      t.integer   :state
-      t.datetime :started_at
-      t.datetime :finished_at
-      t.text     :push_data,   limit: 16777215
-      t.text     :trace,       limit: 2147483647
+      t.integer  :state, index: true
+      t.datetime :started_at, index: true
+      t.datetime :finished_at, index: true
+      t.string   :total_time, index: true
 
-      t.string   :before_oid
-      t.string   :tmp_file
-      t.integer  :pid
+      t.text     :output,       limit: 2147483647
 
       t.timestamps
     end
+
 
 
   end

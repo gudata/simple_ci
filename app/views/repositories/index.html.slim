@@ -1,26 +1,46 @@
 - content_for :breadcrumbs do
-  li.current = link_to('Home', root_url)
+  li = link_to('Home', root_url)
+  li.current = link_to('List Projects', root_url)
 
-h1 Repositories
 
-table
-  tr
-    th Name
-    th Path
-    th
-    th
-    th
+- @repositories.each do |repository|
+  .panel.small-12.large-12.columns
+    h4
+      / = image_tag repository.image.thumb('32x32>').url if repository.image_stored?
+      = link_to repository.name, [repository, :builds]
 
-  - @repositories.each do |repository|
-    tr
-      td = repository.name
-      td = repository.path
-      td = link_to 'Branches', [repository, :branches]
-      td = link_to 'Commits', [repository, :commits]
-      td = link_to 'Show', repository
-      td = link_to 'Edit', edit_repository_path(repository)
-      td = link_to 'Destroy', repository, data: {:confirm => 'Are you sure?'}, :method => :delete
+    - if @builds_for_repository[repository].count > 0
+      table
+        thead
+          tr
+            th Id
+            th
+            th Who
+            th Commit
+            th Branch
+            th Status
+            th Actions
 
-br
+        tbody
+        = render partial: 'builds/build', collection: @builds_for_repository[repository]
 
-= link_to 'New Repository', new_repository_path
+
+    ul.inline-list
+      li
+        ul.inline-list
+          li = link_to 'Branches', [repository, :branches], class: 'button tiny secondary'
+          li = link_to 'Builds', [repository, :builds], class: 'button tiny secondary'
+          li = link_to 'Commits', [repository, :commits], class: 'button tiny secondary'
+      li
+        a.tiny.button.dropdown.secondary data-dropdown="drop-#{dom_id(repository)}" href="#"
+          ' Repository
+          i.gen-enclosed.fi-widget
+        ul.f-dropdown id="drop-#{dom_id(repository)}" data-dropdown-content="data-dropdown-content"
+
+          li = link_to 'Edit', edit_repository_path(repository)
+          li = link_to 'Destroy', repository, data: {:confirm => 'Are you sure?'}, :method => :delete
+          li.separator
+          li = link_to 'Refresh', [:refresh_commits, repository]
+          li = link_to 'Inital Import and delete all builds', [:import_commits, repository]
+
+= link_to 'New Repository', new_repository_path, class: 'button tiny'

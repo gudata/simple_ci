@@ -1,3 +1,9 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li = link_to(@repository.name, [@repository, :branches])
+  li = link_to("Master Scripts", [@repository, @branch, :scripts])
+  li.current Edit
+
 h1 Editing script
 
 == render 'form'

@@ -26,7 +26,7 @@ table
       td = link_to commit.branch.name, repository_commits_path(branch_id: commit.branch_id)
       td = l commit.time, format: :short
       td = link_to 'Show', [repository, commit]
-      td = link_to 'Edit', [:edit, repository, commit]
+      td = link_to 'Build', [:create_build, repository, commit], method: :patch
       td = link_to 'Destroy', [:edit, repository, commit], data: {:confirm => 'Are you sure?'}, :method => :delete
     tr
       td colspan=7 = commit.message

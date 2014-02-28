@@ -4,6 +4,8 @@ p
   strong Name:
   = @repository.name
 p
+  = image_tag @repository.image.thumb('400x200#').url if @repository.image_stored?
+p
   strong Path:
   = @repository.path
 

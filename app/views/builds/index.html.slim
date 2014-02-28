@@ -1,0 +1,15 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li = link_to(repository.name, [:repositories])
+  li.current Builds
+h1 Builds
+
+table
+  tr
+    th
+    th
+    th
+  = render partial: 'builds/build', collection: @builds
+
+.right
+  = paginate @builds
