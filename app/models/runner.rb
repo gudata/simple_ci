@@ -3,7 +3,6 @@ class Runner
     puts 'Runner started'
   end
 
-
   # Goes in infinite loop checking for something to build
   def start
     loop do
@@ -27,12 +26,13 @@ class Runner
         next
       end
 
-      if repository.branches.count > 0
-        puts " - Fetching new commits and branches..."
-        repository.refresh_all_commits
-      else
+      if repository.last_fetch.blank?
         puts " - Import repository"
         repository.import_commits
+        repository.update_attribute(:last_fetch, Time.now)
+      else
+        puts " - Fetching new commits and branches..."
+        repository.refresh_all_commits
       end
     end
   end

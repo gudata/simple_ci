@@ -15,4 +15,32 @@ Fabricator(:repository) do
 
     self.path = repository_path
   end
+
+  after_create do
+    open
+    refresh_branches
+    Branch.where(repository: self).update_all(build: true)
+  end
+end
+
+def make_two_commits repository
+  git = Git.new(repository.path)
+  git.change_file 'first_file'
+  git.commit_file 'first_file', '1 commited'
+  git.change_file 'first_file'
+  git.commit_file 'first_file', '2 commited'
+end
+
+Fabricator(:repository_with_builds, from: :repository) do
+  after_create do
+    repository = self
+    repository.open
+    repository.refresh_branches
+    Branch.where(repository: repository).update_all(build: true)
+    repository.refresh_all_commits
+
+    make_two_commits repository
+
+    repository.refresh_all_commits
+  end
 end

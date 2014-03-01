@@ -11,6 +11,8 @@
       legend Pooling
       = f.input :auto_fetch
       = f.input :fetch_interval, hint: 'in seconds', placeholder: 'in seconds'
-      = f.input :last_fetch
+
+      Last Fetched:
+      = f.object.last_fetch
   .form-actions
     = f.button :submit

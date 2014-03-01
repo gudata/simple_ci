@@ -5,7 +5,7 @@ class BranchesController < ApplicationController
   actions :all, :only => [:update, :index, :edit, :destroy]
 
   def index
-    @branches = repository.branches
+    @branches = repository.branches.order('build DESC, name ASC')
   end
 
   def update

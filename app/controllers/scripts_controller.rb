@@ -28,7 +28,7 @@ class ScriptsController < ApplicationController
   protected
 
   def permitted_params
-    params.permit(script: [:name, :body])
+    params.permit(script: [:name, :body, :branch_id, :timout])
   end
 
   def fix_line_endings

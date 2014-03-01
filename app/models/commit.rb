@@ -10,14 +10,14 @@ class Commit < ActiveRecord::Base
   after_create :assign_build
   max_paginates_per 100
 
-  cattr_accessor :skip_create_builds_flag
-  @@skip_create_builds_flag = false
+  cattr_accessor :create_builds_flag
+  @@create_builds_flag = false
 
   class << self
-    def without_creating_builds
-      @@skip_create_builds_flag = true
+    def creating_builds flag
+      @@create_builds_flag = flag
       yield
-      @@skip_create_builds_flag = false
+      @@create_builds_flag = true
     end
   end
 
@@ -29,7 +29,7 @@ class Commit < ActiveRecord::Base
 
   protected
   def assign_build
-    return if skip_create_builds_flag
+    return unless create_builds_flag
     create_pending_build
   end
 end

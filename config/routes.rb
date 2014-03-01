@@ -2,10 +2,6 @@ SimpleCi::Application.routes.draw do
 
 
   resources :repositories, except:[:show] do
-    member do
-      get :import_commits
-      get :refresh_commits
-    end
     resources :branches, only: [:index, :edit, :update, :destroy] do
       member do
         patch :start

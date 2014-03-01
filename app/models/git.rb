@@ -21,10 +21,9 @@ class Git
 
   def execute command
     cmd = "cd #{@repository_path}; #{git_executable} #{command}"
-    puts cmd
+    puts "  - git: #{cmd}"
     `#{cmd}`
   end
-
 
   def init
     execute "init ."
@@ -33,7 +32,7 @@ class Git
   def change_file name, relative_path = ''
     path = File.join(@repository_path, relative_path)
     file_path = File.join(path, name)
-    puts "changing #{file_path}"
+    puts "  git: changing #{file_path}"
     File.open(file_path, "w") {|f| f.write(rand(999999)) }
   end
 
@@ -45,4 +44,5 @@ class Git
   def switch_branch branch_name
     execute "checkout -b #{branch_name}"
   end
+
 end

@@ -10,16 +10,13 @@ h1 Branches
   .large-10.small-12.columns
     - if @branches.blank?
       .panel.callout.radius
-        p You can wait for the background worker to import the data for you
-          or if you haven't started it. you can do some imports from here.
-        ul.inline-list
-          li = link_to 'Inital import (slow)', [:import_commits, repository], class: 'button secondary tiny'
+        p Wait for the background worker to discover your repository. Did you start it?
     table
       tr
         th
           i.fi-loop
         th Name
-        th ?
+        th Who
         th Tip
         th Last
         th
@@ -59,4 +56,3 @@ h1 Branches
     .panel.callout.radius
       p Choose on which branches we will build.
       p Assign build script to each branch
-      == link_to 'Refresh', [:refresh_commits, repository], class: 'button secondary tiny'

@@ -13,13 +13,7 @@ Branch.find_each do |branch|
   script = branch.scripts.build
   script.name = "Tests"
   script.body = <<-BASH
-echo "hello world"
-i=1
-while [ $i -lt 400 ]; do
-    printf "%i : %b\\n"
-    let "i++"
-done
-echo "end"
+echo "Hello world"
   BASH
 
   script.save

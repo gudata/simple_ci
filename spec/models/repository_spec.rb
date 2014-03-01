@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Repository do
   let(:repository) {Fabricate(:repository)}
+
   it "find all branches" do
     repository.open
     expect {
@@ -25,13 +26,36 @@ describe Repository do
     }.from(1).to(2)
   end
 
-  specify "#refresh_all_commits" do
-    repository.refresh_all_commits
-    master_branch = repository.branches.first
-    master_branch.update_attribute(:build, true)
-
-    builds = Build.in_active_branch.newest.pending
-    expect(builds.first.commit.message).to eq("third commit in master\n")
-    expect(builds.last.commit.message).to eq("first commit in master\n")
+  context "#refresh_all_commits" do
+    specify "New builds should be created first" do
+      repository = Fabricate(:repository_with_builds)
+      builds = Build.in_active_branch.newest.pending
+      expect(builds.first.commit.message).to eq("2 commited\n")
+      expect(builds.last.commit.message).to eq("1 commited\n")
+    end
   end
+
+  context "import"
+    it "import commits without creating builds" do
+      expect {
+        repository.import_commits
+      }.to_not change{Build.count}
+      expect(Commit.count).to eq(3)
+    end
+
+    it "should import commits" do
+      expect {
+        repository.import_commits
+      }.to change{Commit.count}.from(0).to(3)
+    end
+
+    it "delete repository content" do
+      another_repository = Fabricate(:repository)
+      another_repository.import_commits
+
+      expect {
+        repository.import_commits
+      }.to change{Commit.count}.from(3).to(6)
+
+    end
 end

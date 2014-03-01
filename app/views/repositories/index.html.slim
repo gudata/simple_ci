@@ -2,14 +2,23 @@
   li = link_to('Home', root_url)
   li.current = link_to('List Projects', root_url)
 
-
 - @repositories.each do |repository|
   .panel.small-12.large-12.columns
     h4
       / = image_tag repository.image.thumb('32x32>').url if repository.image_stored?
       = link_to repository.name, [repository, :builds]
 
-    - if @builds_for_repository[repository].count > 0
+    - if repository.scripts.count == 0
+      .alert-box.secondary
+        | Create a new build script for your active branch. Scripts are created from
+        = link_to " branches ", [repository, :branches]
+
+    - if @builds_for_repository[repository].count == 0
+      .alert-box.secondary
+        | You don't have builds. On initial import builds are not created, create one from a
+        = link_to " commit ", [repository, :commits]
+        | or push some commits. Don't forget to activate branch.
+    - else
       table
         thead
           tr
@@ -39,9 +48,6 @@
         ul.f-dropdown id="drop-#{dom_id(repository)}" data-dropdown-content="data-dropdown-content"
 
           li = link_to 'Edit', edit_repository_path(repository)
-          li = link_to 'Destroy', repository, data: {:confirm => 'Are you sure?'}, :method => :delete
-          li.separator
-          li = link_to 'Refresh', [:refresh_commits, repository]
-          li = link_to 'Inital Import and delete all builds', [:import_commits, repository]
+          li = link_to 'Delete from CI', repository, data: {:confirm => 'Are you sure?'}, :method => :delete
 
 = link_to 'New Repository', new_repository_path, class: 'button tiny'

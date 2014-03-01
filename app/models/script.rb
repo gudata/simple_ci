@@ -10,12 +10,15 @@ class Script < ActiveRecord::Base
   def run build
     build.fire_state_event(:mark_running)
 
-    Bundler.with_clean_env do
-      Dir.chdir repository.path do
-        execute_with_bash build
+    build.repository.work_on_ref(build.commit.oid) do
+      Bundler.with_clean_env do
+        Dir.chdir repository.path do
+          execute_with_bash build
+        end
       end
     end
   end
+
 
   def make_shellscript body
     script_file = Tempfile.new("shell", binmode: false)
@@ -68,8 +71,7 @@ class Script < ActiveRecord::Base
     puts "mark as unkown #{status}"
     puts e.message.inspect
   ensure
-    output = get_output(tmp_file)
-    build.update_attribute(:output, output)
+    build.update_attribute(:output, get_output(tmp_file))
     File.unlink(script_file_path)
   end
 
