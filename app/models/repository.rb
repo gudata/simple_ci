@@ -104,40 +104,9 @@ class Repository < ActiveRecord::Base
 
   # Read commits, without creating builds
   def import_commits
-    fetch_from_remotes
-    open
-    refresh_branches
     Commit.without_creating_builds do
-      branches.find_each do |branch|
-        import_commits_from_branch(branch)
-      end
+      refresh_all_commits
     end
-  end
-
-
-  # used by initial import
-  def import_commits_from_branch branch
-    return if branch.tip_oid.blank?
-    refresh_branches
-
-    walker = Rugged::Walker.new(@rugged_repository)
-    walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_DATE | Rugged::SORT_REVERSE) # https://github.com/libgit2/rugged/blob/bd062e5cc99ff9ea1dc924d032843718493aaa2d/ext/rugged/rugged.c
-    walker.push(branch.tip_oid)
-    # walker.hide(hex_sha_uninteresting)
-    Commit.where(branch: branch).delete_all
-    Commit.transaction do
-      walker.each do |git_commit|
-        Commit.create({
-          branch_id: branch.id,
-          oid: git_commit.oid,
-          message: git_commit.message,
-          author: Developer.author_from(git_commit),
-          committer: Developer.commiter_from(git_commit),
-          time: git_commit.time,
-          })
-      end
-    end
-    walker.reset
   end
 
 end

@@ -5,6 +5,12 @@
       = build_state(build)
 
     td = image_tag(Gravatar.new(build.commit.committer.email, duration: 1.hour).image_url(size: 32)) rescue ''
+    td
+      - if build.commit.created_at.to_date == Time.now.to_date
+        = build.commit.created_at.strftime('%H:%M')
+      - else
+        = build.commit.created_at.strftime('%d-%m-%Y %H:%M')
+
     td = truncate(build.commit.message, length: 50)
     td
       = build.branch.image ? image_tag(build.branch.image.thumb("32x32>").url) : ''
