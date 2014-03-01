@@ -7,6 +7,10 @@ SimpleCi::Application.routes.draw do
       get :refresh_commits
     end
     resources :branches, only: [:index, :edit, :update, :destroy] do
+      member do
+        patch :start
+        patch :stop
+      end
       resources :scripts
     end
 

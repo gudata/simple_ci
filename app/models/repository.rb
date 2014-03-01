@@ -1,11 +1,15 @@
 class Repository < ActiveRecord::Base
   has_many :branches, dependent: :destroy
-  has_many :builds
+  has_many :builds, dependent: :delete_all
 
   validates :name, presence: true
   validates :path, presence: true
 
   dragonfly_accessor :image
+
+  before_destroy {
+
+  }
 
   def open
     @rugged_repository = Rugged::Repository.new(path)
@@ -39,12 +43,14 @@ class Repository < ActiveRecord::Base
 
   def fetch_from_remotes
     git = Git.new(self.path)
+    git.execute("reset --hard")
+    git.execute("clean -fdx")
     git.execute("fetch --all")
   end
 
   def goto_branch branch_name
     git = Git.new(self.path)
-    git.execute("checkout -f  --track  #{branch_name}")
+    git.execute("checkout -f #{branch_name}")
     git.execute("pull")
   end
 
@@ -59,23 +65,24 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  # This is just update
+  # Reads new commits, creating builds
   def refresh_commits branch
     refresh_branch branch.name
     return if branch.tip_oid.blank?
 
     walker = Rugged::Walker.new(@rugged_repository)
-    walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_DATE) # https://github.com/libgit2/rugged/blob/bd062e5cc99ff9ea1dc924d032843718493aaa2d/ext/rugged/rugged.c
+    walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_DATE | Rugged::SORT_REVERSE) # https://github.com/libgit2/rugged/blob/bd062e5cc99ff9ea1dc924d032843718493aaa2d/ext/rugged/rugged.c
     walker.push(branch.tip_oid)
     # walker.hide(hex_sha_uninteresting)
 
-    puts "#{branch.name}"
-    puts "-"*100
+    puts "Reads new commits from #{branch.name}"
     Commit.transaction do
-      walker.each do |git_commit|
+      walker.each_with_index do |git_commit, index|
 
-        puts "search for commit: #{ Commit.exists?(branch_id: branch.id, oid: git_commit.oid)}"
-        break if Commit.exists?(branch_id: branch.id, oid: git_commit.oid)
+        if Commit.exists?(branch_id: branch.id, oid: git_commit.oid)
+          puts " -  now found #{index} commits"
+          break
+        end
 
         commit_params = {
           branch_id: branch.id,
@@ -85,16 +92,17 @@ class Repository < ActiveRecord::Base
           committer_id: Developer.commiter_from(git_commit).id,
           time: git_commit.time,
         }
-        puts commit_params.inspect
-        puts "creating commit with params #{commit_params}"
+
         Commit.create(commit_params)
+        puts " - create commit for #{commit_params[:oid]}"
       end
     end
+    puts " - end reading new commits"
     walker.reset
   end
 
 
-  # initial import
+  # Read commits, without creating builds
   def import_commits
     fetch_from_remotes
     open
@@ -113,7 +121,7 @@ class Repository < ActiveRecord::Base
     refresh_branches
 
     walker = Rugged::Walker.new(@rugged_repository)
-    walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_DATE) # https://github.com/libgit2/rugged/blob/bd062e5cc99ff9ea1dc924d032843718493aaa2d/ext/rugged/rugged.c
+    walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_DATE | Rugged::SORT_REVERSE) # https://github.com/libgit2/rugged/blob/bd062e5cc99ff9ea1dc924d032843718493aaa2d/ext/rugged/rugged.c
     walker.push(branch.tip_oid)
     # walker.hide(hex_sha_uninteresting)
     Commit.where(branch: branch).delete_all

@@ -3,13 +3,15 @@ Fabricator(:repository) do
 
   before_create do
     repository_path = Git::create_new_repository(Dir.mktmpdir(nil, Dir.tmpdir()))
-    execute = Git.new(repository_path)
+    git = Git.new(repository_path)
 
-    execute.change_file 'first_file'
-    execute.commit_file 'first_file', 'first commit in master'
-    execute.change_file 'first_file'
-    execute.commit_file 'first_file', 'second commit in master'
+    git.change_file 'first_file'
+    git.commit_file 'first_file', 'first commit in master'
+    git.change_file 'first_file'
+    git.commit_file 'first_file', 'second commit in master'
 
+    git.change_file 'second_file'
+    git.commit_file 'second_file', 'third commit in master'
 
     self.path = repository_path
   end

@@ -1,8 +1,11 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li = link_to('List Projects', root_url)
+  li.current = link_to('Edit', [:edit, @repository])
+
 h1 Editing repository
 
 == render 'form'
 
-= link_to 'Show', @repository
-'|
 = link_to 'Back', repositories_path
 

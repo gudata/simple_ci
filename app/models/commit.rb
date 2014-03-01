@@ -3,7 +3,9 @@ class Commit < ActiveRecord::Base
   belongs_to :committer, class_name: 'Developer'#, foreign_key: 'commiter_id'
   belongs_to :branch
   has_one :repository, through: :branch
-  has_many :builds, dependent: :destroy
+  has_many :builds, dependent: :delete_all
+
+  scope :unbuilded_commits, ->() { joins("LEFT OUTER JOIN builds ON builds.commit_id = commits.id").order('created_at DESC') }
 
   after_create :assign_build
   max_paginates_per 100
@@ -20,8 +22,10 @@ class Commit < ActiveRecord::Base
   end
 
   def create_pending_build
-    Build.create(commit_id: self.id, repository_id: self.repository.id)
+    Build.create(commit_id: self.id, oid: self.oid, repository_id: self.repository.id)
   end
+
+
 
   protected
   def assign_build

@@ -33,6 +33,7 @@ table
 
 .right
   = paginate @commits
+  = "Total: #{@commits.total_count} Commits"
 
 br
   = link_to "All Commits", [repository, :commits]

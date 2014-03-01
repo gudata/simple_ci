@@ -14,6 +14,16 @@ class BranchesController < ApplicationController
     end
   end
 
+  def stop
+    resource.update_attribute(:build, false)
+    redirect_to action: :index, notice: 'done'
+  end
+
+  def start
+    resource.update_attribute(:build, true)
+    redirect_to action: :index, notice: 'done'
+  end
+
   def repository
     parent
   end

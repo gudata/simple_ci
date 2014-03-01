@@ -8,7 +8,6 @@ class Script < ActiveRecord::Base
   validates :body, presence: true
 
   def run build
-    # fix_pool
     build.fire_state_event(:mark_running)
 
     Bundler.with_clean_env do
@@ -37,10 +36,7 @@ class Script < ActiveRecord::Base
     # escaped_command = ::Shellwords.escape(self.body)
     script_file_path = make_shellscript(self.body)
     tmp_file = Tempfile.new("child-output", binmode: true)
-    # process = ::ChildProcess.build(Cliver.detect('bash'), '--login', '-c', escaped_command)
     process = ::ChildProcess.build(Cliver.detect('bash'), '--login', '-c', script_file_path)
-    # system "bash -c #{escaped_command}"
-
 
     process.io.stdout = tmp_file
     process.io.stderr = tmp_file
@@ -83,21 +79,6 @@ class Script < ActiveRecord::Base
     tmp_file.close
     tmp_file.unlink
     output
-  end
-
-
-
-  def fix_pull
-    Rails.application.config.after_initialize do
-      ActiveRecord::Base.connection_pool.disconnect!
-
-      ActiveSupport.on_load(:active_record) do
-        config = ActiveRecord::Base.configurations[Rails.env]
-        config['reaping_frequency'] = ENV['DB_REAP_FREQ'] || 10 # seconds
-        config['pool']              = ENV['DB_POOL']      || 5
-        ActiveRecord::Base.establish_connection(config)
-      end
-    end
   end
 
   def encode!(message)

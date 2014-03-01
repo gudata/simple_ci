@@ -25,4 +25,13 @@ describe Repository do
     }.from(1).to(2)
   end
 
+  specify "#refresh_all_commits" do
+    repository.refresh_all_commits
+    master_branch = repository.branches.first
+    master_branch.update_attribute(:build, true)
+
+    builds = Build.in_active_branch.newest.pending
+    expect(builds.first.commit.message).to eq("third commit in master\n")
+    expect(builds.last.commit.message).to eq("first commit in master\n")
+  end
 end

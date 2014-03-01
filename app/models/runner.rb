@@ -27,7 +27,7 @@ class Runner
         next
       end
 
-      if repository.last_fetch
+      if repository.branches.count > 0
         puts " - Fetching new commits and branches..."
         repository.refresh_all_commits
       else
@@ -55,10 +55,6 @@ class Runner
     Build.where(state: Build::States[:running]).exists?
   end
 
-  # def unbuilded_commits
-  #   commit = Commit.joins("LEFT OUTER JOIN builds ON builds.commit_id = commits.id").order('created_at DESC')
-  # end
-
   def run(build)
     Thread.abort_on_exception = true
 
@@ -74,7 +70,4 @@ class Runner
     threads.each { |thr| thr.join }
   end
 
-
 end
-
-

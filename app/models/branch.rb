@@ -1,7 +1,7 @@
 class Branch < ActiveRecord::Base
   belongs_to :repository
-  has_many :commits, dependent: :destroy
-  has_many :scripts, dependent: :destroy
+  has_many :commits, dependent: :delete_all
+  has_many :scripts, dependent: :delete_all
   dragonfly_accessor :image
   validates :name, presence: true
 
