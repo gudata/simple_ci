@@ -1,0 +1,25 @@
+tr class=class_for_commit(commit)
+  td title=(commit.last_build ? commit.last_build.state_name : 'no build')
+    = build_state(commit.last_build)
+
+  td = image_tag(Gravatar.new(commit.committer.email, duration: 1.hour).image_url(size: 32)) rescue ''
+  td
+    - if commit.created_at.to_date == Time.now.to_date
+      = commit.created_at.strftime('%H:%M')
+    - else
+      = commit.created_at.strftime('%d-%m-%Y %H:%M')
+
+  td = truncate(commit.message, length: 50)
+  td
+    = commit.branch.image ? image_tag(commit.branch.image.thumb("32x32>").url) : ''
+    '
+    = commit.branch.name
+  td
+    = build_time commit.last_build
+    '
+    = commit.last_build ? commit.last_build.state_name : '---'
+  td
+    - if commit.last_build
+      = build_actions(commit.last_build)
+    - else
+      = link_to(content_tag(:i, '', class: 'fi-target-two'), [:create_build, commit.repository, commit], method: :patch, class: 'button tiny secondary')

@@ -4,12 +4,6 @@ class RepositoriesController < ApplicationController
 
   def index
     @repositories = collection.order("display_order asc")
-
-    @builds_for_repository = {}
-    @repositories.each do |repository|
-      @builds_for_repository[repository] = repository.builds.newest.limit(7) # in_active_branch
-    end
-
   end
 
   def update

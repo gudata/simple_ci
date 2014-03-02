@@ -29,7 +29,19 @@ module ApplicationHelper
     output.join(' ').html_safe
   end
 
+
+  def build_time build
+    return '---' unless build
+    if build.total_time.present?
+      build.total_time
+    elsif build.started_at.present?
+      distance_of_time_in_words(build.started_at, Time.now)
+    end
+  end
+
   def build_state build
+    return content_tag(:i, '', class: 'fi-blind') unless build
+
     case build.state_name
     when :pending
       icon = 'fi-clock'
@@ -45,4 +57,10 @@ module ApplicationHelper
 
     content_tag :i, '', class: icon
   end
+
+  def class_for_commit commit
+    return 'unknown' if commit.builds.empty?
+    return commit.last_build.state_name
+  end
+
 end

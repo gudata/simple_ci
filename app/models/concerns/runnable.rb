@@ -12,7 +12,6 @@ module Runnable
   }
 
   included do
-    scope :newest, ->{order("created_at DESC")}
     scope :pending, ->() { where(state: States[:pending])}
     scope :running, ->() { where(state: States[:running])}
     scope :success, ->() { where(state: States[:success])}

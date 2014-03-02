@@ -13,26 +13,28 @@
         | Create a new build script for your active branch. Scripts are created from
         = link_to " branches ", [repository, :branches]
 
-    - if @builds_for_repository[repository].count == 0
+    - if repository.builds.count == 0
       .alert-box.secondary
         | You don't have builds. On initial import builds are not created, create one from a
         = link_to " commit ", [repository, :commits]
         | or push some commits. Don't forget to activate branch.
     - else
-      table
-        thead
-          tr
-            th Id
-            th
-            th Who
-            th When
-            th Commit
-            th Branch
-            th Status
-            th Actions
+      - repository.branches.active.each do |branch|
+        h5 = branch.name
 
-        tbody
-        = render partial: 'builds/build', collection: @builds_for_repository[repository]
+        table
+          thead
+            tr
+              th
+              th Who
+              th When
+              th Commit
+              th Branch
+              th Status
+              th Actions
+
+          tbody
+            = render partial: 'commit', collection: Commit.includes(:builds, :committer).where(branch: branch).newest.limit(7)
 
 
     ul.inline-list

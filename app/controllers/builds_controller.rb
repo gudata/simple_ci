@@ -5,14 +5,13 @@ class BuildsController  < ApplicationController
   actions :all, :only => [:index, :show]
 
   def index
-    @builds = repository.builds.newest.page(params[:page])
+    @builds = repository.builds.newest
+
+    @builds = @builds.in_branch(params[:branch_id]) if params[:branch_id]
+
+    @builds = @builds.page(params[:page])
   end
 
-  def show
-    show! do
-
-    end
-  end
   def stop
     # check if we really don't run this process in the background
     if resource.fire_state_event :mark_unknown

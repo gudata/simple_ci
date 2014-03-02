@@ -2,6 +2,7 @@ class Repository < ActiveRecord::Base
   has_many :branches, dependent: :destroy
   has_many :builds, dependent: :delete_all
   has_many :scripts, through: :branches
+  has_many :commits, through: :branches
 
   validates :name, presence: true
   validates :path, presence: true

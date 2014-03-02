@@ -11,5 +11,8 @@ table
     th
   = render partial: 'builds/build', collection: @builds
 
+- if params[:branch_id]
+  .left
+    = link_to 'All builds', url_for(params.tap {|h| h.delete(:branch_id) })
 .right
   = paginate @builds
