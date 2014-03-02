@@ -3,3 +3,12 @@
     width: 110px;
   }
 }
+
+@import "foundation/components/breadcrumbs";
+.simple_ci_breadcrumbs {
+  @include crumb-container;
+  margin-top: 5px;
+  li {
+    @include crumbs;
+  }
+}

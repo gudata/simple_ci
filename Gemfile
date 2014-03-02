@@ -13,6 +13,8 @@ gem 'rugged', git: 'git://github.com/libgit2/rugged.git', branch: 'development',
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 gem 'cliver'
+gem 'merit'
+gem 'bcrypt-ruby'
 gem 'simple_form', '>= 3.0.0'
 gem 'awesome_print', git: 'https://github.com/michaeldv/awesome_print.git'
 gem 'dragonfly', '~>1.0.0'

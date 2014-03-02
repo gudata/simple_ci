@@ -8,33 +8,34 @@
       / = image_tag repository.image.thumb('32x32>').url if repository.image_stored?
       = link_to repository.name, [repository, :builds]
 
-    - if repository.scripts.count == 0
+    - if repository.branches.active.count == 0
       .alert-box.secondary
-        | Create a new build script for your active branch. Scripts are created from
-        = link_to " branches ", [repository, :branches]
+        | Activate some branch from
+        = link_to ' branches', [repository, :branches]
 
-    - if repository.builds.count == 0
-      .alert-box.secondary
-        | You don't have builds. On initial import builds are not created, create one from a
-        = link_to " commit ", [repository, :commits]
-        | or push some commits. Don't forget to activate branch.
-    - else
-      - repository.branches.active.each do |branch|
-        h5 = branch.name
+    - repository.branches.active.each do |branch|
+      h5 = branch.name
 
-        table
-          thead
-            tr
-              th
-              th Who
-              th When
-              th Commit
-              th Branch
-              th Status
-              th Actions
+      - if branch.scripts.count == 0
+        .alert-box.secondary
+          = "Create a build script for #{branch.name} branch. Scripts are created from"
+          = link_to " branches ", [repository, :branches]
+          ' or directly from
+          = link_to " here ", [repository, branch, :scripts]
 
-          tbody
-            = render partial: 'commit', collection: Commit.includes(:builds, :committer).where(branch: branch).newest.limit(7)
+      table
+        thead
+          tr
+            th
+            th Who
+            th When
+            th Commit
+            th Branch
+            th Status
+            th Actions
+
+        tbody
+          = render partial: 'commit', collection: Commit.includes(:builds, :committer).where(branch: branch).newest.limit(7)
 
 
     ul.inline-list
@@ -51,5 +52,3 @@
 
           li = link_to 'Edit', edit_repository_path(repository)
           li = link_to 'Delete from CI', repository, data: {:confirm => 'Are you sure?'}, :method => :delete
-
-= link_to 'New Repository', new_repository_path, class: 'button tiny'

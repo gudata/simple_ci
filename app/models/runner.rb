@@ -7,7 +7,6 @@ class Runner
   def start
     loop do
       puts 'Waiting for builds'
-      # refresh branches
       runonce
       sleep 5
     end

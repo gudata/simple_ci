@@ -3,6 +3,7 @@ class RepositoriesController < ApplicationController
   inherit_resources
 
   def index
+    redirect_to(action: :new) and return unless Repository.exists?
     @repositories = collection.order("display_order asc")
   end
 

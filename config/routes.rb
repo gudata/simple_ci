@@ -1,6 +1,8 @@
 SimpleCi::Application.routes.draw do
 
 
+  resources :developers
+
   resources :repositories, except:[:show] do
     resources :branches, only: [:index, :edit, :update, :destroy] do
       member do

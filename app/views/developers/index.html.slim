@@ -1,0 +1,28 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li Administration
+  li.current = link_to("Developers", [:developers])
+
+
+h1 Listing developers
+
+table
+  tr
+    th email
+    th name
+    th
+    th
+    th
+
+  - @developers.each do |developer|
+    tr
+      td = image_tag(Gravatar.new(developer.email, duration: 1.hour).image_url(size: 32)) rescue ''
+      td = developer.email
+      td = developer.name
+      td = link_to 'Show', developer
+      td = link_to 'Edit', edit_developer_path(developer)
+      td = link_to 'Destroy', developer, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Developer', new_developer_path

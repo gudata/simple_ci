@@ -1,0 +1,8 @@
+= simple_form_for(@developer) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :can_login
+    = f.input :password
+  .form-actions
+    = f.button :submit

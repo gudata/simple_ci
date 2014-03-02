@@ -1,0 +1,15 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li Administration
+  li = link_to("Developers", [:developers])
+  li.current Edit
+
+
+h1 Editing developer
+
+== render 'form'
+
+= link_to 'Show', @developer
+'|
+= link_to 'Back', developers_path
+

@@ -8,10 +8,32 @@ html lang="en"
     = javascript_include_tag "vendor/modernizr"
     = csrf_meta_tags
   body
+    nav.top-bar data-topbar=""
+      ul.title-area
+        li.name
+          h1
+            = link_to "Simple CI", root_path
+        li.toggle-topbar.menu-icon
+          a href="#" Menu
+      section.top-bar-section
+        /! Right Nav Section
+        ul.right
+          - if user_signed_in?
+            li
+              = link_to current_user.email, [:edit, current_user]
+          li.active
+            = link_to 'Badges', developers_path
+          li.has-dropdown
+            a href="#" Administration
+            ul.dropdown
+              li
+                = link_to 'Developers', developers_path
+                = link_to 'New Repository', new_repository_path
+
     section role="main"
       .row
         .small-12.small-centered.columns
-          ul.breadcrumbs
+          ul.simple_ci_breadcrumbs
             = yield :breadcrumbs
           = display_flash_messages
           = yield

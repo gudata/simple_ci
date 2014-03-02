@@ -1,0 +1,18 @@
+- content_for :breadcrumbs do
+  li = link_to('Home', root_url)
+  li Administration
+  li = link_to("Developers", [:developers])
+  li.current Show
+
+p#notice = notice
+
+= image_tag('developer.jpg')
+
+p style="font-size:8px"
+  Photo Credit: http://www.freedigitalphotos.net/images/thinking-monkey-photo-p218370
+
+
+
+= link_to 'Edit', edit_developer_path(@developer)
+'|
+= link_to 'Back', developers_path

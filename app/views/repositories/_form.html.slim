@@ -2,9 +2,9 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :name
+    = f.input :name, placeholder: 'The name of the project'
     = f.input :display_order
-    = f.input :path
+    = f.input :path, placeholder: 'The path to the checkouted repository /home/ci/repositories/something'
     = f.input :image, as: :file
     = f.hidden_field :retained_image
     fieldset

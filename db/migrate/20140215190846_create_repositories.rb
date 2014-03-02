@@ -52,6 +52,8 @@ class CreateRepositories < ActiveRecord::Migration
     create_table :developers, force: true do |t|
       t.string :email
       t.string :name
+      t.boolean :can_login
+      t.string :password_digest
       t.string :image_uid
       t.timestamps
     end
