@@ -2,12 +2,12 @@
   = f.error_notification
   .form-inputs
     .row
-      .small-12.medium-11.large-10.column.panel
-        = f.input :body, label: 'Bash script', input_html: {rows: 4}
       .small-12.medium-1.large-2.column
         = f.input :name
         = f.association :branch
         = f.input :timeout
+      .small-12.medium-11.large-10.column.panel
+        = f.input :body, label: 'Bash script', input_html: {rows: 4}
 
   .form-actions
     = f.button :submit

@@ -27,6 +27,7 @@ describe Repository do
   end
 
   context "#refresh_all_commits" do
+
     specify "New builds should be created first" do
       repository = Fabricate(:repository_with_builds)
       builds = Build.in_active_branch.newest.pending
@@ -35,27 +36,4 @@ describe Repository do
     end
   end
 
-  context "import"
-    it "import commits without creating builds" do
-      expect {
-        repository.import_commits
-      }.to_not change{Build.count}
-      expect(Commit.count).to eq(3)
-    end
-
-    it "should import commits" do
-      expect {
-        repository.import_commits
-      }.to change{Commit.count}.from(0).to(3)
-    end
-
-    it "delete repository content" do
-      another_repository = Fabricate(:repository)
-      another_repository.import_commits
-
-      expect {
-        repository.import_commits
-      }.to change{Commit.count}.from(3).to(6)
-
-    end
 end

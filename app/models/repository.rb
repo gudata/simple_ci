@@ -90,13 +90,6 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  # Read commits, without creating builds
-  def import_commits
-    puts "import_commit - all repository data cleaned"
-    clean_repository_data
-    refresh_all_commits
-  end
-
   def master_branch
     branches.select{|branch| branch.name == 'master'}.first
   end

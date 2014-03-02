@@ -16,11 +16,6 @@ Fabricator(:repository) do
     self.path = repository_path
   end
 
-  after_create do
-    open
-    refresh_branches
-    Branch.where(repository: self).update_all(build: true)
-  end
 end
 
 def make_two_commits repository

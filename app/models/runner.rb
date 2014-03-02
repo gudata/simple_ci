@@ -26,14 +26,9 @@ class Runner
         next
       end
 
-      if repository.last_fetch.blank?
-        puts " - Import repository"
-        repository.import_commits
-        repository.update_attribute(:last_fetch, Time.now)
-      else
-        puts " - Fetching new commits and branches..."
-        repository.refresh_all_commits
-      end
+      puts " - Fetching new commits and branches..."
+      repository.refresh_all_commits
+      repository.update_attribute(:last_fetch, Time.now)
     end
   end
 
