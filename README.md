@@ -18,6 +18,7 @@ Install
     # Edit config/database.yml to put your database settings
 
     rake db:create db:migrate
+    rake assets:precompile
     rake ci:run # Start the runner
     rails s -e production # Start the server
 
