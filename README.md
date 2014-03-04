@@ -22,6 +22,9 @@ Install
     rake ci:run # Start the runner
     rails s -e production # Start the server
 
+    # under nginx via thin
+    # https://gist.github.com/gudata/9349609
+
 Authentication
 ===============
 
