@@ -21,7 +21,7 @@ table
     th
   - @commits.each do |commit|
     tr
-      td = image_tag(Gravatar.new(commit.committer.email, duration: 1.hour).image_url(size: 32))
+      td = image_tag(Gravatar.new(commit.committer.email, duration: 1.hour).image_url(size: 32), size: '32x32')
       td = commit.oid
       td = link_to commit.branch.name, repository_commits_path(branch_id: commit.branch_id)
       td = l commit.time, format: :short

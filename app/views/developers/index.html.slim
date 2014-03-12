@@ -16,7 +16,7 @@ table
 
   - @developers.each do |developer|
     tr
-      td = image_tag(Gravatar.new(developer.email, duration: 1.hour).image_url(size: 32)) rescue ''
+      td = image_tag(Gravatar.new(developer.email, duration: 1.hour).image_url(size: 32), size: '32x32') rescue ''
       td = developer.email
       td = developer.name
       td = link_to 'Show', developer

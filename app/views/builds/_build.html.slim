@@ -4,7 +4,7 @@
     td title=build.state_name
       = build_state(build)
 
-    td = image_tag(Gravatar.new(build.commit.committer.email, duration: 1.hour).image_url(size: 32)) rescue ''
+    td = image_tag(Gravatar.new(build.commit.committer.email, duration: 1.hour).image_url(size: 32), size: '32x32') rescue ''
     td
       - if build.commit.time.to_date == Time.now.to_date
         = build.commit.time.strftime('%H:%M')

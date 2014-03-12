@@ -39,7 +39,7 @@ h1 Branches
           td
             - if branch.tip_commit.persisted?
               span title=branch.tip_commit.committer.email
-                = image_tag(Gravatar.new(branch.tip_commit.committer.email, duration: 1.hour).image_url(size: 32))
+                = image_tag(Gravatar.new(branch.tip_commit.committer.email, duration: 1.hour).image_url(size: 32), size: '32x32')
             - else
               == '&nbsp;'
           td

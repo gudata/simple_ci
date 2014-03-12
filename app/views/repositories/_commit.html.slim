@@ -2,7 +2,7 @@ tr class=class_for_commit(commit)
   td title=(commit.last_build ? commit.last_build.state_name : 'no build')
     = build_state(commit.last_build)
 
-  td = image_tag(Gravatar.new(commit.committer.email, duration: 1.hour).image_url(size: 32)) rescue ''
+  td = image_tag(Gravatar.new(commit.committer.email, duration: 1.hour).image_url(size: 32), size: '32x32') rescue ''
   td
     - if commit.created_at.to_date == Time.now.to_date
       = commit.created_at.strftime('%H:%M')
