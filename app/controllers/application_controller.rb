@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   def authenticate
     return unless Developer.exists?
 
-    if user = authenticate_with_http_basic { |u, p| Developer.find_by(email: u).try(:authenticate, p) }
+    if user = authenticate_with_http_basic { |u, p| Developer.find_by(email: u, can_login: true).try(:authenticate, p) }
       session[:user_id] =  user.id
     else
       request_http_basic_authentication
