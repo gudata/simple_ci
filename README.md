@@ -23,7 +23,7 @@ Install
     RAILS_ENV=production rake ci:run # Start the runner
     rails s -e production # Start the server
 
-    # under nginx via thin
+    # under nginx via thin (thin start -C thin.yml)
     # https://gist.github.com/gudata/9349609
 
 Authentication
