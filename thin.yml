@@ -1,0 +1,25 @@
+pid: tmp/pids/simple_ci_thin.pid
+tag: simple_ci
+user: gitlab_ci
+group: gitlab_ci
+
+
+socket: /tmp/simple_ci.sock
+
+
+onebyone: true
+
+threaded: false
+no-epoll: false
+daemonize: true
+timeout: 30
+wait: 30
+
+log: log/production.log
+max_conns: 124
+require: []
+
+environment: production
+max_persistent_conns: 12
+servers: 1
+chdir: /home/gitlab_ci/simple_ci
