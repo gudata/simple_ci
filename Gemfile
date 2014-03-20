@@ -11,7 +11,11 @@ gem 'slim', :require => 'slim-rails'
 gem "slim-rails"
 gem 'rugged', git: 'git://github.com/libgit2/rugged.git', branch: 'development', submodules: true
 # Use sqlite3 as the database for Active Record
+
 gem 'sqlite3'
+gem 'mysql2'
+# gem 'pg'
+
 gem 'cliver'
 gem 'merit'
 gem 'bcrypt-ruby'
