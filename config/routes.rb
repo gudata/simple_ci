@@ -2,6 +2,7 @@ SimpleCi::Application.routes.draw do
 
 
   resources :developers
+  resource :status, only: [:show]
 
   resources :repositories, except:[:show] do
     resources :branches, only: [:index, :edit, :update, :destroy] do
@@ -16,6 +17,9 @@ SimpleCi::Application.routes.draw do
       member do
         patch :stop
         patch :start_new
+      end
+      collection do
+        patch :cancel_all
       end
     end
     resources :commits do

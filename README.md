@@ -5,7 +5,8 @@ Continuous Integration Server build with Ruby on Rails.
 
 Support diffrent build scripts for different branches.
 Builds only selected branches
-No external services needed.
+No external services needed
+badges for the build status per branch
 
 
 Install
@@ -19,7 +20,7 @@ Install
 
     rake db:create db:migrate
     rake assets:precompile
-    rake ci:run # Start the runner
+    RAILS_ENV=production rake ci:run # Start the runner
     rails s -e production # Start the server
 
     # under nginx via thin

@@ -12,6 +12,16 @@ class BuildsController  < ApplicationController
     @builds = @builds.page(params[:page])
   end
 
+  def cancel_all
+    canceled = 0
+    repository.builds.pending.find_each do |build|
+      canceled += build.cancel ? 1 : 0
+    end
+
+    flash[:success] = "canceled #{canceled} builds"
+    redirect_to action: :index
+  end
+
   def stop
     # check if we really don't run this process in the background
     if resource.fire_state_event :mark_unknown

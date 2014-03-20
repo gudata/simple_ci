@@ -4,6 +4,8 @@
   li.current Builds
 h1 Builds
 
+= button_to('Cancel all builds', [:cancel_all, repository, :builds], method: :patch, class: 'button tiny')
+
 table
   tr
     th
@@ -16,3 +18,4 @@ table
     = link_to 'All builds', url_for(params.tap {|h| h.delete(:branch_id) })
 .right
   = paginate @builds
+

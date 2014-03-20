@@ -6,3 +6,8 @@
 h1 Editing branch
 
 == render 'form'
+
+.panel
+  h4 Link for the state
+  - link_with_host = status_url(token: @branch.token, show_branch: 1)
+  = link_to link_with_host, link_with_host

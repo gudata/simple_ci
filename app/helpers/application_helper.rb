@@ -24,6 +24,9 @@ module ApplicationHelper
     when :success
       output << show
       output << start_new
+    when :canceled
+      output << show
+      output << start_new
     end
 
     output.join(' ').html_safe

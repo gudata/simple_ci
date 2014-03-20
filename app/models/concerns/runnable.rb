@@ -9,6 +9,7 @@ module Runnable
     success: 2,
     failed: 3,
     unknown: 4,
+    canceled: 5,
   }
 
   included do
@@ -47,8 +48,11 @@ module Runnable
       state :unknown, value: States[:unknown] do
       end
 
+      state :canceled, value: States[:canceled] do
+      end
+
       event :mark_pending do
-        transition [:failed, :unknown, :success] => :pending
+        transition [:failed, :unknown, :success, :canceled] => :pending
       end
 
       event :mark_success do
@@ -66,6 +70,10 @@ module Runnable
       # Forced stop
       event :mark_failed do
         transition running: :failed
+      end
+
+      event :cancel do
+        transition [:unknown, :pending, :canceled] => :canceled
       end
 
     end # state machine

@@ -21,7 +21,7 @@ class CreateRepositories < ActiveRecord::Migration
       t.string :canonical_name
       t.string :tip_oid
       t.boolean :build
-      t.string   "token"
+      t.string   :token
       t.integer  "polling_interval"
       t.timestamps
     end

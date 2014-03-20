@@ -1,0 +1,6 @@
+- if params[:show_branch] == '1'
+  = @branch.name
+  ' :
+  = link_to "#{@state_behaviour.state_string}", url_for(@state_behaviour.href)
+- else
+  = link_to "#{@state_behaviour.state_string}", url_for(@state_behaviour.href)
