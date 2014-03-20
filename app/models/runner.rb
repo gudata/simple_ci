@@ -57,6 +57,7 @@ class Runner
     threads = []
     build.branch.scripts.each_with_index do |script, index|
       threads << Thread.new(build, script) do
+        fix_pool
         puts "Starting script #{index} - #{script.name}"
         script.run(build)
       end
@@ -64,4 +65,14 @@ class Runner
     threads.each { |thr| thr.join }
   end
 
+  def fix_pool
+    Rails.application.config.after_initialize do
+      ActiveRecord::Base.connection_pool.disconnect!
+      ActiveSupport.on_load(:active_record) do
+        config = ActiveRecord::Base.configurations[Rails.env]
+      config['reaping_frequency'] = ENV['DB_REAP_FREQ'] || 10 # seconds
+      config['pool']              = ENV['DB_POOL']      || 5
+      ActiveRecord::Base.establish_connection(config)
+    end
+  end
 end
